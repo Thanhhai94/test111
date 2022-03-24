@@ -8,6 +8,7 @@ import Departments from './Departments';
 import PayrollSheets from './PayrollSheets';
 import {connect} from 'react-redux';
 import { fetchStaffs,fetchDepts, fetchSalary } from '../redux/ActionCreators';
+import StaffListDepartments from './StaffListDepartments';
 
 
 const mapStateToProps = state => {
@@ -63,6 +64,10 @@ class MainComponents extends Component {
   // }
 
 
+  onDeptSelect(deptID){
+    console.log(deptID)
+  }
+
   componentDidMount(){
     console.log('didmount')
     this.props.fetchStaffs();
@@ -85,7 +90,9 @@ class MainComponents extends Component {
                                                                                     staffsErrMess={this.props.staffs.errMess}
                                                                                     handleSubmit={(newStaff) => this.addNewStaff(newStaff)}/>} />
                 <Route path='/StaffList/:staffId' component={StaffWithId} />
-                <Route exact path='/Departments' component={() => <Departments depts={this.props.depts.depts}/>}/>
+                <Route exact path='/Departments' component={() => <Departments depts={this.props.depts.depts}
+                                                                                onSelectDept={deptID => this.onDeptSelect(deptID)}/>}/>
+                <Route path='/Departments/:deptId'component={() => <StaffListDepartments staffs={this.props.staffs.staffs}/>} />
                 <Route exact path='/Salary' component={() => <PayrollSheets salary={this.props.salary.salary}/>}/>
                 <Redirect to='StaffList'/>
             </Switch>
